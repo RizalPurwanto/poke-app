@@ -1,4 +1,4 @@
-# poke-app-test
+# poke-app
 
 ## Project setup
 ```
