@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex flex-wrap justify-center">
-      <div
+      <!-- <div
         href=""
         v-for="pokemon in pokemonsStore"
         :key="pokemon.index"
@@ -33,7 +33,12 @@
             alt="Card image cap"
           />
         </div>
-      </div>
+      </div> -->
+      <home-card
+        v-for="pokemon in pokemonsStore"
+        :key="pokemon.index"
+        v-bind:pokemon="pokemon"
+      ></home-card>
     </div>
     <div
       class="visible"
@@ -44,7 +49,9 @@
 </template>
 
 <script>
+import HomeCard from "../components/HomeCard.vue";
 export default {
+  components: { HomeCard },
   name: "HomePoke",
   created() {
     if (this.$store.state.pokemons.length == 0) {
@@ -55,19 +62,10 @@ export default {
     async fetchPokemons() {
       await this.$store.dispatch("fetchPokemons");
     },
-    handleDetailPage(id) {
-      this.$router.push({
-        //kirim untuk merender komponen DetailPage
-        name: "Details",
-        params: {
-          pokeId: id,
-        },
-      });
 
-      window.scrollTo(0, 0);
-    },
     handleScrollBottom(isVisible) {
       if (!isVisible) {
+        this.fetchPokemons();
         return;
       }
       if (this.$store.state.pokemons.length != 0) {

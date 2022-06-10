@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-wrap justify-center">
-    <div
+    <!-- <div
       v-for="pokemon in catchedStore"
       :key="pokemon.id"
       v-bind:class="[
@@ -51,12 +51,19 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
+    <catched-card
+      v-for="pokemon in catchedStore"
+      :key="pokemon.id"
+      v-bind:pokemon="pokemon"
+    ></catched-card>
   </div>
 </template>
 
 <script>
+import CatchedCard from "../components/CatchedCard.vue";
 export default {
+  components: { CatchedCard },
   name: "CatchedPoke",
 
   methods: {

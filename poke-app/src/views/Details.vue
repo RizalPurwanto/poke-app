@@ -55,7 +55,11 @@
           <div
             class="rounded-lg bg-gray-100 mx-1 my-1 px-1 py-1 border text-md font-bold"
           >
-            {{ onePokemonsStore.flavor_text_entries[0].flavor_text }}
+            {{
+              onePokemonsStore.flavor_text_entries.find((el) => {
+                return el.language.name == "en";
+              }).flavor_text
+            }}
           </div>
           <div class="mx-1 my-1 px-1 bg-gray-400 text-center">
             <p class="text-gray-800 font-bold" href="#">Details</p>
@@ -64,7 +68,7 @@
           <div
             class="rounded-lg bg-gray-100 mx-1 my-1 px-1 py-1 border text-lg font-bold"
           >
-            <p>Capture Rate : {{ onePokemonsStore.capture_rate }}%</p>
+            <p>Capture Rate : {{ onePokemonsStore.capture_rate }}</p>
             <p>Base Happiness : {{ onePokemonsStore.base_happiness }}</p>
             <p>
               Habitat :
@@ -111,12 +115,25 @@ export default {
     async addToCatched(payload) {
       const rng = Math.floor(Math.random() * 100);
       const rate = this.onePokemonsStore.capture_rate;
+      const probability = ((rate + 1) / (255 + 1)) * ((255 + 1) / 256) * 100;
 
-      if (rng > 100 - rate) {
+      if (rng > 100 - probability) {
         await this.$store.dispatch("addToCatched", payload);
         this.$router.push("/catched").catch(() => {});
+        Swal.fire(
+          `Successfully Captured "${
+            this.onePokemonsStore.name.charAt(0).toUpperCase() +
+            this.onePokemonsStore.name.slice(1)
+          }", with score ${rng}  out of minimum ${Math.floor(
+            100 - probability
+          )} to catch`
+        );
       } else {
-        Swal.fire("Capture unsuccessful");
+        Swal.fire(
+          `Capture unsuccessful, score ${rng} out of minimum ${Math.floor(
+            100 - probability
+          )} to catch`
+        );
       }
     },
     handleDetailPage(id) {

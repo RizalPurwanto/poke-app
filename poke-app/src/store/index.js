@@ -64,7 +64,6 @@ export default new Vuex.Store({
     },
     async addToCatched(context, payload) {
       context.commit("SET_CATCHED", payload);
-      Swal.fire("Successfully Captured");
     },
     async releasePokemon(context, id) {
       context.commit("SET_RELEASED", id);
